@@ -1,136 +1,118 @@
-# Event Planning Website
+# VibeNest
 
-Welcome to the **VibeNest** repository! This website is designed to help users plan, organize, and manage events, such as weddings, parties, conferences, and more.
+*VibeNest* is a platform where users can discover, share, and manage events. This project uses *Ballerina* for backend services and *MySQL* as the database.
 
-## Table of Contents
+## Prerequisites
 
-- [Project Overview](#project-overview)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contact](#contact)
+Before setting up the project, ensure you have the following installed:
 
-# Project Overview
+1. [Ballerina](https://ballerina.io/downloads/)
+2. [MySQL](https://dev.mysql.com/downloads/)
 
-The Event Planning Website is an online platform that allows users to create, manage, and share events. With features like guest list management,and task tracking, it streamlines the process of organizing any event.
+## Project Setup
 
-This project is designed with scalability and user experience in mind, offering a responsive interface and seamless navigation across different devices.
+Follow the steps below to set up the project on your local machine.
 
-# Features
+### 1. Install Ballerina
 
-- **Event Creation:** Create and customize event pages with descriptions, images, and schedules.
-- **Guest Management:** Add and manage guests, track RSVPs, and send invitations.
-- **Task List:** Keep track of event-related tasks and mark them as completed.
-- **Mobile Friendly:** Fully responsive design for mobile and tablet devices.
-- **Social Sharing:** Share event pages via social media or email.
+Download and install *Ballerina* from the [official website](https://ballerina.io/downloads/). Follow the instructions for your operating system.
 
-# Tech Stack
+Once installed, verify the installation by running the following command in your terminal:
+```bash
+ballerina -v
+```
 
-- **Frontend:** HTML, CSS, JavaScript , bootstrap 
-- **Backend:** JavaScript, Ballerina
-- **Database:** MYSQL
 
-# Installation
+### 2. Install MySQL
 
-To get started with the project locally:
+Download and install *MySQL* from the [official website](https://dev.mysql.com/downloads/).
 
-### Steps
+Once installed, start MySQL and log in using the following command:
+```bash
+mysql -u root -p
+```
 
-1. **Clone the repository**:
+### 3. Set Up the Database
 
-    ```bash
-    git clone https://github.com/your-username/event-planning-website.git
-    ```
+After logging into MySQL, create a new database named baltest by executing the following SQL command:
+```sql
+CREATE DATABASE baltest;
+```
 
-2. **Navigate to the project directory**:
+Switch to the baltest database:
+```sql
+USE baltest;
+```
 
-    ```bash
-    cd event-planning-website
-    ```
+Now, create the necessary tables for the project.
 
-3. **Set up the database**:
+### 4. Create Tables
 
-   Open your MySQL command-line or a database management tool (e.g., phpMyAdmin) and run the following commands to create the database and tables.
+#### Create posts Table
+Execute the following SQL command to create the posts table:
+```sql
+CREATE TABLE posts (
+    post_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(300),
+    description VARCHAR(1000),
+    user_id INT,
+    image_path LONGTEXT,
+    category VARCHAR(10),
+    contact VARCHAR(12)
+);
+```
 
-    ```sql
-    -- Create the database
-    CREATE DATABASE baltest;
+#### Create users Table
+Execute the following SQL command to create the users table:
+```sql
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    email VARCHAR(100) UNIQUE,
+    birth_date VARCHAR(10),
+    contact VARCHAR(12),
+    password VARCHAR(20)
+);
+```
 
-    -- Use the newly created database
-    USE baltest;
+### 5. Configure the Project
 
-    -- Create the users table
-    CREATE TABLE users (
-        user_id INT PRIMARY KEY AUTO_INCREMENT,
-        first_name VARCHAR(50),
-        last_name VARCHAR(50),
-        email VARCHAR(100) UNIQUE,
-        birth_date DATE,
-        contact  VARCHAR(12),
-        password INT
-    );
+1. Clone the repository to your local machine:
+   ```bash
+   git clone https://github.com/Eshhar121/iwb361-cen.git
+   ```
 
-    -- Create the posts table
-    CREATE TABLE posts (
-        post_id INT PRIMARY KEY AUTO_INCREMENT,
-        title VARCHAR(30),
-        description VARCHAR(50),
-        user_id INT,
-        image_path VARCHAR(100),
-        category  VARCHAR(10),
-        contact  VARCHAR(12),
-        FOREIGN KEY (user_id) REFERENCES users(user_id)
-    );
-    ```
+2. Open the project folder:
+   ```bash
+   cd vibenest
+   ```
 
-4. **Set up environment variables**:
+3. Set up your *Ballerina* project by running:
+   ```bash
+   ballerina init
+   ```
 
-   Create a `.env` file in the root directory of the project and configure the following:
+4. Configure the *Ballerina* project to connect to your MySQL database by updating the database connection settings in the Config.toml file:
+   ```toml
+   [database]
+   url = "jdbc:mysql://localhost:3306/baltest"
+   username = "root"
+   password = "yourpassword"
+   ```
 
-    ```bash
-    DB_HOST=your-mysql-host
-    DB_PORT=your-mysql-port
-    DB_USER=your-mysql-username
-    DB_PASSWORD=your-mysql-password
-    DB_NAME=baltest
-    JWT_SECRET=your-jwt-secret
-    EMAIL_API_KEY=your-email-api-key
-    ```
+### 6. Run the Project
 
-5. **Install dependencies** (if required):
+To run the project, use the following command:
+```bash
+ballerina run
+```
 
-   Ballerina dependencies can be managed using the `Ballerina.toml` file. If the project has external dependencies, you can pull them with:
+### 7. Access the Application
 
-    ```bash
-    bal build
-    ```
+Once the application is running, open your browser and navigate to:
 
-6. **Run the application**:
+```http://localhost:9090```
 
-    Start the Ballerina application by running the following command:
 
-    ```bash
-    bal run
-    ```
-
-7. **Access the website**:
-
-    Once the server is running, open your browser and visit:
-
-    ```
-    http://localhost:8080
-    ```
-
-# Usage
-
-- **Create an account** to start planning your event.
-- **Log in** and create your first event.
-- Share your event page with friends and family.
-
-# Contact
-
-If you have any questions or need further assistance, feel free to reach out:
-
-- **Name** - eshanharshanag@gmail.com
-- GitHub: https://github.com/Eshhar121
+You should now be able to access *VibeNest* and start using the application.
