@@ -13,13 +13,13 @@ Welcome to the **VibeNest** repository! This website is designed to help users p
 - [License](#license)
 - [Contact](#contact)
 
-## Project Overview
+# Project Overview
 
 The Event Planning Website is an online platform that allows users to create, manage, and share events. With features like guest list management,and task tracking, it streamlines the process of organizing any event.
 
 This project is designed with scalability and user experience in mind, offering a responsive interface and seamless navigation across different devices.
 
-## Features
+# Features
 
 - **Event Creation:** Create and customize event pages with descriptions, images, and schedules.
 - **Guest Management:** Add and manage guests, track RSVPs, and send invitations.
@@ -27,13 +27,13 @@ This project is designed with scalability and user experience in mind, offering 
 - **Mobile Friendly:** Fully responsive design for mobile and tablet devices.
 - **Social Sharing:** Share event pages via social media or email.
 
-## Tech Stack
+# Tech Stack
 
 - **Frontend:** HTML, CSS, JavaScript , bootstrap 
 - **Backend:** JavaScript, Ballerina
 - **Database:** MYSQL
 
-## Installation
+# Installation
 
 To get started with the project locally:
 
@@ -83,14 +83,14 @@ To get started with the project locally:
     http://localhost:8080
     ```
 
-## Usage
+# Usage
 
 - **Create an account** to start planning your event.
 - **Log in** and create your first event.
 - Manage guests, tasks, and budgets through the intuitive dashboard.
 - Share your event page with friends and family.
 
-## Contributing
+# Contributing
 
 We welcome contributions! If you'd like to contribute to this project, please follow these steps:
 
@@ -103,11 +103,11 @@ We welcome contributions! If you'd like to contribute to this project, please fo
 
 For larger changes, please open an issue first to discuss your ideas.
 
-## License
+# License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
-## Contact
+# Contact
 
 If you have any questions or need further assistance, feel free to reach out:
 
