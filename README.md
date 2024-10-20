@@ -37,6 +37,10 @@ This project is designed with scalability and user experience in mind, offering 
 
 To get started with the project locally:
 
+---
+
+### Steps
+
 1. **Clone the repository**:
 
     ```bash
@@ -49,17 +53,56 @@ To get started with the project locally:
     cd event-planning-website
     ```
 
-3. **Set up environment variables**:
+3. **Set up the database**:
 
-    Create a `.env` file in the root directory of the project and configure the following:
+   Open your MySQL command-line or a database management tool (e.g., phpMyAdmin) and run the following commands to create the database and tables.
+
+    ```sql
+    -- Create the database
+    CREATE DATABASE baltest;
+
+    -- Use the newly created database
+    USE baltest;
+
+    -- Create the users table
+    CREATE TABLE users (
+        user_id INT PRIMARY KEY AUTO_INCREMENT,
+        first_name VARCHAR(50),
+        last_name VARCHAR(50),
+        email VARCHAR(100) UNIQUE,
+        birth_date DATE,
+        contact  VARCHAR(12),
+        password INT
+    );
+
+    -- Create the posts table
+    CREATE TABLE posts (
+        post_id INT PRIMARY KEY AUTO_INCREMENT,
+        title VARCHAR(30),
+        description VARCHAR(50),
+        user_id INT,
+        image_path VARCHAR(100),
+        category  VARCHAR(10),
+        contact  VARCHAR(12),
+        FOREIGN KEY (user_id) REFERENCES users(user_id)
+    );
+    ```
+
+4. **Set up environment variables**:
+
+   Create a `.env` file in the root directory of the project and configure the following:
 
     ```bash
-    DB_HOST=your-mongodb-uri
+    DB_HOST=your-mysql-host
+    DB_PORT=your-mysql-port
+    DB_USER=your-mysql-username
+    DB_PASSWORD=your-mysql-password
+    DB_NAME=baltest
     JWT_SECRET=your-jwt-secret
     EMAIL_API_KEY=your-email-api-key
     ```
 
-4. **Install dependencies**:
+5. **Install dependencies** (if required):
 
    Ballerina dependencies can be managed using the `Ballerina.toml` file. If the project has external dependencies, you can pull them with:
 
@@ -67,7 +110,7 @@ To get started with the project locally:
     bal build
     ```
 
-5. **Run the application**:
+6. **Run the application**:
 
     Start the Ballerina application by running the following command:
 
@@ -75,13 +118,15 @@ To get started with the project locally:
     bal run
     ```
 
-6. **Access the website**:
+7. **Access the website**:
 
     Once the server is running, open your browser and visit:
 
     ```
     http://localhost:8080
     ```
+
+---
 
 # Usage
 
