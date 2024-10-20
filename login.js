@@ -1,15 +1,15 @@
 // Login
 async function loginUser() {
-    const username = document.getElementById('LoginUsername').value;
+    const email = document.getElementById('LoginUsername').value;
     const password = document.getElementById('LoginPassword').value;
 
     // Basic input validation
-    if (!username || !password) {
+    if (!email || !password) {
         alert('Please enter both username and password.');
         return;
     }
 
-    const user = { username, password };
+    const user = { email, password };
 
     try {
         // Disable login button while request is in progress
@@ -24,14 +24,19 @@ async function loginUser() {
         });
 
         if (response.status === 200) {
-            getUserId(username);
-            alert('Login successful.');
+            getUserId(email);
+            
+            // Display success alert
+            const loginAlert = document.getElementById('loginAlert');
+            loginAlert.classList.remove('d-none');
+            loginAlert.classList.add('show');
+            
         } else {
             // Handle specific error cases
             if (response.status === 401) {
                 alert('Invalid username or password.');
             } else {
-                alert('Cannot logging in. Please try again.');
+                alert('Cannot log in. Please try again.');
             }
         }
     } catch (error) {
@@ -40,14 +45,14 @@ async function loginUser() {
         console.error('Error:', error);
     } finally {
         // Re-enable login button
-        document.getElementById('loginButton').disabled = false;
-    }
+        document.getElementById('loginButton').disabled = false;
+    }
 }
 
 //Get USerID
-async function getUserId(username) {
+async function getUserId(email) {
     try {
-        const response = await fetch(`http://localhost:9090/api/UserId/${username}`);
+        const response = await fetch(`http://localhost:9090/api/UserId/${email}`);
         const userId = await response.json();
         console.log(userId[2]);
         localStorage.setItem('userId', userId[2]);

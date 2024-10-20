@@ -49,30 +49,29 @@ service /api on new http:Listener(9090) {
     }
 
     // Register 
-    resource function post RegisterUser(User user) returns http:Response|error {
+     resource function post RegisterUser(User user) returns http:Response|error {
 
-        // SQL query to insert a new user
-        sql:ParameterizedQuery query = `INSERT INTO users (first_name, last_name, birth_date, email, contact, password)
+    // SQL query to insert a new user
+    sql:ParameterizedQuery query = `INSERT INTO users (first_name, last_name, birth_date, email, contact, password)
                                      VALUES (${user.first_name},${user.last_name},${user.birth_date},${user.email},${user.contact},${user.password})`;
 
-        // Execute the query to insert the user
+    // Execute the query to insert the user
+    sql:ExecutionResult result = check self.db->execute(query);
 
-        sql:ExecutionResult result = check self.db->execute(query);
+    // Create a response object
+    http:Response res = new;
+    res.statusCode = 201; // HTTP 201 Created
+    res.setPayload({message: "User registered successfully"});
 
-        // Create a response object
-        http:Response res = new;
-        res.statusCode = 201; // HTTP 201 Created
-        res.setPayload({message: "User registered successfully"});
-
-        return res;
-    }
+    return res;
+}
 
     //Login
 
     resource function post Login(LoginUser user) returns http:Response|error {
 
         // Check if username exists
-        sql:ParameterizedQuery usernameQuery = `SELECT 1 FROM users WHERE username = ${user.username}`;
+        sql:ParameterizedQuery usernameQuery = `SELECT 1 FROM users WHERE email = ${user.email}`;
         sql:ParameterizedQuery userpasswordQuery = `SELECT 1 FROM users WHERE password = ${user.password}`;
         sql:ExecutionResult usernameResult = check self.db->queryRow(usernameQuery);
         sql:ExecutionResult userpasswordResult = check self.db->queryRow(userpasswordQuery);
@@ -115,9 +114,9 @@ service /api on new http:Listener(9090) {
 
     // Get the UserId based on username
 
-    resource function get UserId/[string username]() returns anydata[]|error {
+    resource function get UserId/[string email]() returns anydata[]|error {
         // Prepare the SQL query to fetch the user ID based on the username
-        sql:ParameterizedQuery query = `SELECT id FROM users WHERE username = ${username}`;
+        sql:ParameterizedQuery query = `SELECT  user_id FROM users WHERE email = ${email}`;
 
         // Execute the query and retrieve the result
         sql:ExecutionResult result = check self.db->queryRow(query);
@@ -127,17 +126,38 @@ service /api on new http:Listener(9090) {
 
     }
 
+    //get the Postids belong to user
+     resource function get PostIds/[int userId]() returns anydata[]|error {
+    // Prepare the SQL query to fetch all post IDs for the given user ID
+    sql:ParameterizedQuery query = `SELECT post_id FROM posts WHERE user_id = ${userId}`;
+    
+    // Execute the query and retrieve the result
+    sql:ExecutionResult result = check self.db->queryRow(query);
+
+    // Check if the result has any rows
+    if result is sql:ExecutionResult {
+        // Convert the result to an array of post IDs
+        anydata[] postIds = result.toArray();
+        
+        // Return the array of post IDs
+        return postIds;
+    } else {
+        
+    }
+}
+
+
     //Get Post By ID 
     resource function get posts/[int id]() returns Post|http:NotFound {
-        Post|error post = self.db->queryRow(`SELECT * FROM POSTS WHERE ID = ${id}`);
+        Post|error post = self.db->queryRow(`SELECT * FROM POSTS WHERE post_id = ${id}`);
         return post is Post ? post : http:NOT_FOUND;
     }
 
     //Check Post Id and User Id match
 
-    resource function get Veify/[int post_id]/[int user_id]() returns boolean|error {
+    resource function get Veify/[int post_id]/[int user_id]() returns http:Response|error {
 
-        sql:ParameterizedQuery query = `SELECT user_id FROM posts WHERE id = ${post_id}`;
+        sql:ParameterizedQuery query = `SELECT user_id FROM posts WHERE post_id = ${post_id}`;
 
         sql:ExecutionResult result = check self.db->queryRow(query);
 
@@ -147,23 +167,29 @@ service /api on new http:Listener(9090) {
         anydata user_String_id = user_id.toString();
 
         if (userID == user_String_id) {
-            return true;
+            http:Response res = new;
+            res.statusCode = 200; // HTTP 201 Created
+            res.setPayload({message: "Okay"});
+            return res;
         }
         else {
-            return false;
+            http:Response res = new;
+            res.statusCode = 400; // HTTP 201 Created
+            res.setPayload({message: "Okay"});
+            return res;
         }
 
     }
 
     //Delete Post
 
-    resource function get DeletePost/[int post_id]() returns boolean|error {
+    resource function get DeletePost/[int post_id]() returns http:NoContent|error {
 
-        sql:ParameterizedQuery query = `DELETE FROM posts WHERE id = ${post_id}`;
+        sql:ParameterizedQuery query = `DELETE FROM posts WHERE post_id = ${post_id}`;
 
         sql:ExecutionResult result = check self.db->execute(query);
 
-        return true;
+        return http:NO_CONTENT;
     }
 
     //UpDate Posts
@@ -177,7 +203,7 @@ service /api on new http:Listener(9090) {
                                         image_path = ${post.image_path}, 
                                         contact = ${post.contact}, 
                                         category = ${post.category} 
-                                    WHERE id = ${post_id}`;
+                                    WHERE post_id = ${post_id}`;
 
         // Execute the query and handle errors
         sql:ExecutionResult result = check self.db->execute(query);

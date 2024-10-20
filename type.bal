@@ -3,8 +3,6 @@ import ballerina/http;
 
 type Post record {
 
-    
-
     @sql:Column {
         name: "title"
     }
@@ -71,13 +69,13 @@ type User record {
 };
 
 
-type LoginUser record {|
-    string username;
+type LoginUser record {
+    string email;
     string password;
-|};
+};
 
 
-type UserRegistered record {|
+type UserRegistered record {
     *http:Created;
     User body;
-|};
+};
