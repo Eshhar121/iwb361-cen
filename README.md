@@ -39,9 +39,9 @@ To get started with the project locally:
 
 1. **Clone the repository**:
 
-    ```bash
+    bash
     git clone https://github.com/your-username/event-planning-website.git
-    ```
+    
 
 2. **Navigate to the project directory**:
 
