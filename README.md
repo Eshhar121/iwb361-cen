@@ -39,9 +39,9 @@ To get started with the project locally:
 
 1. **Clone the repository**:
 
-    bash
+    ```bash
     git clone https://github.com/your-username/event-planning-website.git
-    
+    ```
 
 2. **Navigate to the project directory**:
 
@@ -59,7 +59,7 @@ To get started with the project locally:
     EMAIL_API_KEY=your-email-api-key
     ```
 
-4. **Install dependencies** (if required):
+4. **Install dependencies**:
 
    Ballerina dependencies can be managed using the `Ballerina.toml` file. If the project has external dependencies, you can pull them with:
 
